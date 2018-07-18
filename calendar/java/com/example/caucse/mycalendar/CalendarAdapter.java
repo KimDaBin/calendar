@@ -1,18 +1,19 @@
 package com.example.caucse.mycalendar;
 
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
-        import android.content.Context;
-        import android.graphics.Color;
-        import android.text.format.Time;
-        import android.util.AttributeSet;
-        import android.util.Log;
-        import android.view.Gravity;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.GridView;
+import android.content.Context;
+import android.graphics.Color;
+import android.text.format.Time;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridView;
 
-        import java.util.Calendar;
+import java.util.Calendar;
 
 public class CalendarAdapter extends BaseAdapter {
 
@@ -20,14 +21,10 @@ public class CalendarAdapter extends BaseAdapter {
 
     Context mContext;
 
-    public static int oddColor = Color.rgb(225,225,225);
-    public static int headColor = Color.rgb(12,32,158);
-
     private int selectedPosition = -1;
     private MonthItem[] items;
     private int countColumn = 7;
 
-    int mStartDay;
     int curYear;
     int curMonth;
     int firstDay;
@@ -35,7 +32,6 @@ public class CalendarAdapter extends BaseAdapter {
     int startDay;
 
     Calendar mCalendar;
-    boolean recreteItems = false;
 
     public CalendarAdapter(Context context) {
         super();
@@ -62,18 +58,11 @@ public class CalendarAdapter extends BaseAdapter {
 
         int dayOfWeek = mCalendar.get(Calendar.DAY_OF_WEEK);
         firstDay = getFirstDay(dayOfWeek);
-        Log.d(TAG,"firstDay : "+firstDay);
 
-        mStartDay = mCalendar.getFirstDayOfWeek();
         curYear = mCalendar.get(Calendar.YEAR);
         curMonth = mCalendar.get(Calendar.MONTH);
         lastDay = getMonthLastDay(curYear, curMonth);
-
-        Log.d(TAG,"curYear : "+curYear+", curMonth : "+curMonth+", lastDay : "+lastDay);
-
-        int diff = mStartDay - Calendar.SUNDAY-1;
         startDay = getFirstDayOfWeek();
-        Log.d(TAG,"mStartDay : "+mStartDay+", startDay : "+startDay);
     }
 
     private int getFirstDay(int dayOfWeek) {
@@ -135,13 +124,23 @@ public class CalendarAdapter extends BaseAdapter {
     }
 
     private void resetDayNumbers() {
+        int set = 1;
         for(int i = 0; i<42;i++){
+            int overNumber = 0;
             int dayNumber = (i+1) - firstDay;
-            if(dayNumber<1||dayNumber>lastDay){
+            if(dayNumber < 1){
+                if(curMonth-1 < 0){
+                    overNumber = getMonthLastDay(curYear-1,12+curMonth)+dayNumber;
+                } else {
+                    overNumber = getMonthLastDay(curYear,curMonth-1)+dayNumber;
+                }
+                dayNumber = 0;
+            } else if(dayNumber > lastDay){
+                overNumber = dayNumber-lastDay;
                 dayNumber = 0;
             }
 
-            items[i] = new MonthItem(dayNumber);
+            items[i] = new MonthItem(dayNumber,overNumber);
         }
     }
 
@@ -162,8 +161,6 @@ public class CalendarAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG,"getView("+position+") called.");
-
         MonthItemView itemView;
         if(convertView ==null){
             itemView = new MonthItemView(mContext);
@@ -171,12 +168,10 @@ public class CalendarAdapter extends BaseAdapter {
             itemView = (MonthItemView) convertView;
         }
 
-        GridView.LayoutParams params = new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT,120);
+        GridView.LayoutParams params = new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT,160);
 
         int rowIndex = position/countColumn;
         int columnIndex = position%countColumn;
-
-        Log.d(TAG,"Index : "+rowIndex+","+columnIndex);
 
         itemView.setItem(items[position]);
         itemView.setLayoutParams(params);
@@ -193,6 +188,9 @@ public class CalendarAdapter extends BaseAdapter {
 
         if(position == getSelectedPosition()){
             itemView.setBackgroundColor(Color.YELLOW);
+        } else if(items[position].getDay()==0){
+            itemView.setBackgroundColor(Color.LTGRAY);
+            itemView.setTextColor(Color.BLACK);
         } else{
             itemView.setBackgroundColor(Color.WHITE);
         }

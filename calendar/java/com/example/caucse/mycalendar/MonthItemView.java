@@ -32,7 +32,7 @@ public class MonthItemView extends android.support.v7.widget.AppCompatTextView{
         if(day != 0){
             setText(String.valueOf(day));
         } else{
-            setText("");
+            setText(String.valueOf(item.getOverValue()));
         }
     }
 

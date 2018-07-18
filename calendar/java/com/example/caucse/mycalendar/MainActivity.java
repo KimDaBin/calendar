@@ -2,6 +2,7 @@ package com.example.caucse.mycalendar;
 
 import java.util.ArrayList;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -33,10 +34,6 @@ public class MainActivity extends AppCompatActivity implements OnTimeChangedList
     String txt ="";
     int curHour;
     int curMin;
-
-    EditText et;
-    Button save;
-    Button exit;
 
     ArrayAdapter<String> adapter;
     ArrayList<String> as;
@@ -125,40 +122,39 @@ public class MainActivity extends AppCompatActivity implements OnTimeChangedList
 
         if(curId == R.id.action_settings){
             final DayData dd = new DayData(curYear, curMonth, curDay);
+
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            final AlertDialog dialog = builder.create();
-            View schedule = View.inflate(this, R.layout.schedule_layout, null);
-            builder.setTitle("일정추가");
+            final View schedule = View.inflate(this, R.layout.schedule_layout, null);
+            builder.setTitle("일정 추가");
             builder.setView(schedule);
-            save = (Button)schedule.findViewById(R.id.button1);
-            exit = (Button)schedule.findViewById(R.id.button2);
-            et = (EditText)schedule.findViewById(R.id.editText1);
+            builder.create();
+            final DialogInterface mPopupDlg = builder.show();
+
+            Button save = (Button)schedule.findViewById(R.id.button1);
+            Button exit = (Button)schedule.findViewById(R.id.button2);
+            final EditText et = (EditText)schedule.findViewById(R.id.editText1);
             final TimePicker tp = (TimePicker)schedule.findViewById(R.id.timePicker1);
+
             tp.setOnTimeChangedListener(this);
 
-            View.OnClickListener saveListener = new View.OnClickListener() {
+            save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO Auto-generated method stub
                     txt = et.getText().toString();
                     dd.setTime(tp.getCurrentHour(), tp.getCurrentMinute());
                     dd.setString(txt);
                     dayData.add(dd);
                 }
-            };
-            save.setOnClickListener(saveListener);
+            });
 
-            View.OnClickListener exitListener = new View.OnClickListener(){
+            exit.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v){
-                    dialog.cancel();
+                public void onClick(View view) {
+                    mPopupDlg.dismiss();
                 }
-            };
-            exit.setOnClickListener(exitListener);
-
-            builder.show();
+            });
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
