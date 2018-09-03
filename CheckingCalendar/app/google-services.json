@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "323673779484",
+    "firebase_url": "https://checkingcalendar-b1a2e.firebaseio.com",
+    "project_id": "checkingcalendar-b1a2e",
+    "storage_bucket": "checkingcalendar-b1a2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323673779484:android:2d95a88dbde39dfe",
+        "android_client_info": {
+          "package_name": "org.androidtown.checkingcalendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323673779484-eotsplli2d2e88bh3bb683mnps2ub15b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.androidtown.checkingcalendar",
+            "certificate_hash": "7d0e867712bafa702aedd0db988a3a5ed1015359"
+          }
+        },
+        {
+          "client_id": "323673779484-7bqek9063sdtc89p1ekhk19pumu8mv2a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGXaqRNRn0isDeKs2SA4hq0Z8-zNlXpAk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323673779484-7bqek9063sdtc89p1ekhk19pumu8mv2a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
